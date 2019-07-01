@@ -2,23 +2,36 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AssessmentBrandStudio.Data;
+using AssessmentBrandStudio.Models;
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace AssessmentBrandStudio
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IHostingEnvironment env)
         {
-            Configuration = configuration;
-        }
+            var builder = new ConfigurationBuilder()
+                    .SetBasePath(env.ContentRootPath)
+                    .AddJsonFile("appsettings.json")
+                    .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
 
+            builder.AddEnvironmentVariables();
+            Configuration = builder.Build();
+
+        }
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -30,13 +43,29 @@ namespace AssessmentBrandStudio
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
+            services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 
+            // Add Identity services to the services container.
+            services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+            options.Password.RequireNonAlphanumeric = false)
+                .AddEntityFrameworkStores<DataEmployeeContext>()
+                .AddDefaultTokenProviders()
+                .AddDefaultUI(UIFramework.Bootstrap4);
+            // Add other services
+
+
+            services.AddDbContext<DataEmployeeContext>(options =>
+          options.UseSqlServer(
+                 Configuration.GetConnectionString("DefaultConnection")));
+            // Add other services
+            //services.AddTransient<EmployeeContextSeedData>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerfactory
+                        /*  EmployeeContextSeedData sampleData*/)
         {
             if (env.IsDevelopment())
             {
@@ -52,13 +81,24 @@ namespace AssessmentBrandStudio
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
-
-            app.UseMvc(routes =>
+            // app.UseAuthentication();
+            Mapper.Initialize(Config =>
             {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                Config.CreateMap<EmployeeViewModel, Employee>().ReverseMap();
             });
+
+            app.UseMvc(config =>
+            {
+                config.MapRoute(
+                    name: "Default",
+                    template: "{controller}/{action}/{id?}",
+                    defaults: new { controller = "App", action = "Employees" });
+
+            }
+                        );
+
+            // Add Sample Data
+            // sampleData.InitializeData();
         }
     }
 }
