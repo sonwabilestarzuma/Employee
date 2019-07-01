@@ -58,8 +58,6 @@ namespace AssessmentBrandStudio.Controllers
                 return View("Error");
             }
 
-
-
             return View("AddEmployee");
         }
     }

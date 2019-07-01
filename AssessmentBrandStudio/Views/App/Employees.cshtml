@@ -17,25 +17,41 @@
                     <th>Date of Birth</th>
                     <th>Email</th>
                     <th>Employee Status</th>
+                    <th class="text-center">Active/NotActive</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var item in Model)
                 {
-                    <tr>
+                <tr>
 
-                        <td>
-                            @item.FirstName<a asp-controller="Employee" asp-action="Details" asp-route-id="@item.Id">Details</a>
-                        </td>
-                        <td>@item.Surname</td>
-                        <td> @item.DateOfBirth</td>
-                        <td> @item.UserRole</td>
-                        <td>@item.Email</td>
-                        <td>@item.EmployeeStatus</td>
-                        <td>
-                            <a asp-controller="Technology" asp-action="Edit"><button class="btn btn-primary form-control btn-block ">Manage</button></a>
-                        </td>
-                    </tr>
+                    <td>
+                        @item.FirstName<a asp-controller="Employee" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                    </td>
+                    <td>@item.Surname</td>
+                    <td> @item.DateOfBirth</td>
+                    <td> @item.UserRole</td>
+                    <td>@item.Email</td>
+                    <td>@item.EmployeeStatus</td>
+                    <td>
+                        <div class="employee-content">
+
+                            @if (item.EmployeeStatusId == 1)
+                            {
+                                <img class="px-sm-1" style="width:20px" src="~/Images/Status/red.png" >
+                                <small>Not Active</small>
+                            }
+                            else
+                            {
+                                <img class="px-sm-1" style="width:20px" src="~/Images/Status/green.png">
+                                <small> Active</small>
+                            }
+                        </div>
+                    </td>
+                    <td>
+                        <a asp-controller="Technology" asp-action="Edit"><button class="btn btn-primary form-control btn-block ">Manage</button></a>
+                    </td>
+                </tr>
                 }
 
             </tbody>
