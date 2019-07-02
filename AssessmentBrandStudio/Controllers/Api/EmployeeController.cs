@@ -48,7 +48,7 @@ namespace AssessmentBrandStudio.Controllers.Api
                 _repository.AddEmployee(newEmployee);
                 if (await _repository.SaveChangesAsync())
                 {
-                    return Created($"api/employees/{theEmployee.FirstName}", Mapper.Map<EmployeeViewModel>(newEmployee));
+                    return Created($"api/employees/{theEmployee.EmployeeStatuses}", Mapper.Map<EmployeeViewModel>(newEmployee));
                 }
 
             }

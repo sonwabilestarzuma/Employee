@@ -11,5 +11,9 @@ namespace AssessmentBrandStudio.Models
     public class ApplicationUser : IdentityUser
     {
         public string ContactNumber { get; set; }
+        public string  FirstName { get; set; }
+        public string DateOfBirth { get; set; }
+        public string  EmailAddress { get; set; }
+       
     }
 }

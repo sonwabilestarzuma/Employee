@@ -1,13 +1,10 @@
 ﻿@model AssessmentBrandStudio.Models.EmployeeViewModel
-
 @{
-    ViewData["Title"] = "Add Employee";
+    ViewData["Title"] = "AddEmployee";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Add Employee</h1>
-
-
+<h4>Add Employee</h4>
 <hr />
 <div class="row ">
     <div class="col-xs-4">
@@ -27,10 +24,34 @@
             </div>
 
             <div class="form-group">
+                <label asp-for="Employee.UserRole" class="control-label"></label>
+                <input asp-for="Employee.UserRole" class="form-control" />
+                <span asp-validation-for="Employee.UserRole" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Employee.DateOfBirth" class="control-label"></label>
+                <input asp-for="Employee.DateOfBirth" class="form-control" />
+                <span asp-validation-for="Employee.DateOfBirth" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Employee.Email" class="control-label"></label>
+                <input asp-for="Employee.Email" class="form-control" />
+                <span asp-validation-for="Employee.Email" class="text-danger"></span>
+            </div>
+
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Employee.Active" /> @Html.DisplayNameFor(model => model.Employee.Active)
+                </label>
+            </div>
+
+            <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
-   
+
         @section Scripts {
             @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
         }

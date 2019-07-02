@@ -36,6 +36,10 @@ namespace AssessmentBrandStudio.Controllers
                 return Redirect("/error");
             }
         }
+        public IActionResult AddEmployee()
+        {
+            return View();
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
