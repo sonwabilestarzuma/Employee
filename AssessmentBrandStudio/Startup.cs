@@ -58,14 +58,14 @@ namespace AssessmentBrandStudio
           options.UseSqlServer(
                  Configuration.GetConnectionString("DefaultConnection")));
             // Add other services
-            //services.AddTransient<EmployeeContextSeedData>();
+            services.AddTransient<EmployeeContextSeedData>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerfactory
-                        /*  EmployeeContextSeedData sampleData*/)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerfactory,
+                         EmployeeContextSeedData sampleData)
         {
             if (env.IsDevelopment())
             {
@@ -98,7 +98,7 @@ namespace AssessmentBrandStudio
                         );
 
             // Add Sample Data
-            // sampleData.InitializeData();
+            sampleData.InitializeData();
         }
     }
 }

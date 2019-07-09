@@ -8,12 +8,12 @@
 <div class="row">
     <div class="col-sm-9" style="padding:0px">
         <hr />
-        <table id="employees" class="table table-bordered table-hover">
+        <table id="employeeTable" class="Display table table-bordered table-hover">
             <thead>
                 <tr>
                     <th>FirstName</th>
                     <th>Suranme</th>
-                    <th class="text-center">DateofBirth</th>
+                    <th class="text-center">Date Of Birth</th>
                     <th>UserRole</th>
                     <th>Email</th>
 
@@ -21,37 +21,50 @@
                     <th>Edit</th>
                 </tr>
             </thead>
+
+            <tfoot>
+                <tr>
+                    <th>FirstName</th>
+                    <th>Suranme</th>
+                    <th class="text-center">Date Of Birth</th>
+                    <th>UserRole</th>
+                    <th>Email</th>
+
+                    <th class="text-center">Active/NotActive</th>
+                    <th>Edit</th>
+                </tr>
+            </tfoot>
             <tbody>
                 @foreach (var item in Model)
                 {
-                <tr>
+                    <tr>
 
-                    <td>
-                        @item.FirstName<a asp-controller="Employee" asp-action="Details" asp-route-id="@item.Id">Details</a>
-                    </td>
-                    <td>@item.Surname</td>
-                    <td> @item.DateOfBirth</td>
-                    <td> @item.UserRole</td>
-                    <td>@item.Email</td>
-                    <td>
-                        <div class="employee-content">
+                        <td>
+                            @item.FirstName<a asp-controller="Employee" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                        </td>
+                        <td>@item.Surname</td>
+                        <td> @item.DateOfBirth</td>
+                        <td> @item.UserRole</td>
+                        <td>@item.Email</td>
+                        <td>
+                            <div class="employee-content">
 
-                            @if (item.EmployeeStatusId == 1)
-                            {
-                                <img class="px-sm-1" style="width:20px" src="~/Images/Status/red.png" >
-                                <small>Not Active</small>
-                            }
-                            else
-                            {
-                                <img class="px-sm-1" style="width:20px" src="~/Images/Status/green.png">
-                                <small> Active</small>
-                            }
-                        </div>
-                    </td>
-                    <td>
-                        <a asp-controller="Technology" asp-action="Edit"><button class="btn btn-primary form-control btn-block ">Manage</button></a>
-                    </td>
-                </tr>
+                                @if (item.EmployeeStatusId == 1)
+                                {
+                                    <img class="px-sm-1" style="width:20px" src="~/Images/Status/red.png">
+                                    <small>Not Active</small>
+                                }
+                                else
+                                {
+                                    <img class="px-sm-1" style="width:20px" src="~/Images/Status/green.png">
+                                    <small> Active</small>
+                                }
+                            </div>
+                        </td>
+                        <td>
+                            <a asp-controller="Technology" asp-action="Edit"><button class="btn btn-primary form-control btn-block ">Manage</button></a>
+                        </td>
+                    </tr>
                 }
 
             </tbody>
@@ -69,4 +82,34 @@
         </div>
     </div>
 </div>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
 
+@section Scripts{
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+    
+    <script>
+        $(document).ready(function () {
+
+            $("#employeeTable").DataTable({
+
+                "Ajax": {
+                    "url": "/App/Employees",
+                    "type": "Get",
+                    "dataType": "Json"
+                },
+                "columns": [
+                    { "data": "FirstName" },
+                    { "data": "Surname" },
+                    { "data": "Date Of Birth" },
+                    { "data": "UserRole" },
+                    { "data": "Email" },
+                    { "data": "Active/NotActive" },
+                    { "data": "Edit" }
+                ]
+            })
+
+        });
+    </script>
+   
+    
+    }

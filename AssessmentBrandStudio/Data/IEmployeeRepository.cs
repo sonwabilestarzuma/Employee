@@ -8,6 +8,8 @@ namespace AssessmentBrandStudio.Data
 {
     public interface IEmployeeRepository
     {
+       // object HighCharts { get; set; }
+
         IEnumerable<Employee> GetAllEmployees();
         Employee GetEmployeeByName(string employeeName);
         Task<bool> UpdateEmployeeAsync(Employee employee);
